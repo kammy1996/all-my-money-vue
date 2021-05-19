@@ -5,15 +5,31 @@ Vue.use(VueRouter);
 
 
 const routes = [
-  {
-    path:'/',
-    name:'Index',
-    component:() => import(`../views/index.vue`)
-  },
+ 
   {
     path:'/records',
     name:'Records',
     component:() => import(`../views/records.vue`)
+  },
+  {
+    path:'/',
+    name:'Dashboard',
+    component:() => import(`../views/dashboard.vue`)
+  },
+  {
+    path:'/networth',
+    name:'Networth',
+    component:() => import(`../views/networth.vue`)
+  },
+  {
+    path:'/goals',
+    name:'Goals',
+    component:() => import(`../views/goals.vue`)
+  },
+  {
+    path:'/subscription',
+    name:'Subscription',
+    component:() => import(`../views/subscription.vue`)
   } 
 ]
 

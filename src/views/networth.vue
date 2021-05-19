@@ -1,13 +1,11 @@
 <template>
   <div>
-    <p>this is in records</p>
+    <p>this is in Net worth</p>
   </div>
 </template>
 
 <script>
-
   export default {
-    name: 'Records',
-    
+    name: 'Networth',
   }
 </script>

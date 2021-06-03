@@ -7,34 +7,46 @@
       <v-toolbar-title><v-icon>mdi-cash</v-icon> All My Money</v-toolbar-title>
       <v-row class='mx-15'>
         <v-col cols='2'>
-          <v-btn text >
-           <router-link class="navigation-link" :to="{name: 'Dashboard'}"> <v-icon>mdi-view-dashboard</v-icon> Dashboard</router-link>
-          </v-btn>
+          <router-link class="no-link" :to="{name: 'Dashboard'}"> 
+            <v-btn text >
+              <v-icon class="mr-1">mdi-view-dashboard</v-icon> Dashboard
+            </v-btn>
+          </router-link>  
         </v-col>
         <v-col cols='2'>
-          <v-btn text >
-           <router-link class="navigation-link" :to="{name: 'Networth'}"><v-icon>mdi-currency-inr</v-icon>Net Worth</router-link>
-          </v-btn>
+          <router-link class="no-link" :to="{name: 'Networth'}">
+            <v-btn text >
+            <v-icon>mdi-currency-inr</v-icon>Net Worth
+            </v-btn>
+          </router-link>
         </v-col>
         <v-col cols='2'>
-          <v-btn text >
-           <router-link class="navigation-link" :to="{name: 'Goals'}"><v-icon>mdi-flag-triangle</v-icon> Goals</router-link>
-          </v-btn>
+          <router-link class="no-link" :to="{name: 'Goals'}">
+            <v-btn text >
+            <v-icon class="mr-1">mdi-flag-triangle</v-icon> Goals
+            </v-btn>
+          </router-link>
         </v-col>
          <v-col cols='2'>
-          <v-btn text >
-           <router-link class="navigation-link" :to="{name: 'Records'}"><v-icon>mdi-file-document</v-icon> Records</router-link>
-          </v-btn>
+          <router-link class="no-link" :to="{name: 'Records'}">
+            <v-btn text >
+            <v-icon class="mr-1">mdi-file-document</v-icon> Records
+            </v-btn>
+          </router-link>
         </v-col>
         <v-col cols='2'>
-          <v-btn text >
-           <router-link class="navigation-link" :to="{name: 'Subscription'}"><v-icon>mdi-playlist-check</v-icon> subscription</router-link>
-          </v-btn>
+          <router-link class="no-link" :to="{name: 'Subscription'}">
+            <v-btn text >
+            <v-icon class="mr-1">mdi-playlist-check</v-icon> subscription
+            </v-btn>
+          </router-link>
         </v-col>
         <v-col cols='2'>
+          <router-link class="no-link"  :to="{name: 'Subscription'}">
           <v-btn text >
-           <router-link class="navigation-link" :to="{name: 'Subscription'}"><v-icon>mdi-google-analytics</v-icon> Analytics</router-link>
+           <v-icon class="mr-1">mdi-google-analytics</v-icon> Analytics
           </v-btn>
+          </router-link>
         </v-col>
       </v-row>
 
@@ -89,4 +101,6 @@
     color:white;
     text-decoration: none;
   }
+
+ 
 </style>

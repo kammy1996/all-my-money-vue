@@ -9,7 +9,12 @@ const routes = [
   {
     path:'/records',
     name:'Records',
-    component:() => import(`../views/records.vue`)
+    component:() => import(`../views/records/records.vue`),
+  },
+  {
+    path:'/records/settings',
+    name:'RecordSettings',
+    component:() => import(`../views/records/record-settings.vue`),
   },
   {
     path:'/',

@@ -46,12 +46,5 @@ export default {
 };
 </script>
 <style>
-.background-wrapper {
-  background: rgba(0, 0, 0, 0.04);
-}
 
-.custom-container {
-  margin-left: 50px;
-  margin-right: 50px;
-}
 </style>

@@ -55,16 +55,18 @@
           </v-tab>
 
           <v-tab-item id="income">
-            <RecordIncomeExpense
+            <record-income-expense
               :recordType="recordType"
               @closeRecordDialog="recordDialog = false;"
-             />
+             > 
+            </record-income-expense>
           </v-tab-item>
           <v-tab-item id="expense" >
-            <RecordIncomeExpense 
+            <record-income-expense
               :recordType="recordType"
               @closeRecordDialog="recordDialog = false;"
-            />
+             > 
+            </record-income-expense>
           </v-tab-item>
           <v-tab-item id="transfer">
             transfer

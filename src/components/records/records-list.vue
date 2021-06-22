@@ -34,15 +34,10 @@
         </v-avatar> {{item.account.name}}
       </template>
       <template v-slot:item.category="{ item }">
-        <v-avatar
-          size="25"
-          :color="item.category.color"
-          class="mr-1"
-        >
-          <v-icon small dark>
+       
+          <v-icon small >
             {{item.category.icon}}
           </v-icon>
-        </v-avatar>
           
         {{item.category.name}}
       </template>

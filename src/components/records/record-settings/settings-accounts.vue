@@ -6,7 +6,7 @@
       <div class="add-categories ml-5 mb-5">    
         <p>Add a New Account</p>
         <v-btn rounded color="success" @click="accountDialog = true" > 
-        <v-icon  class="mr-2">mdi-bank</v-icon> Add Account
+        <v-icon  class="mr-2" small>mdi-bank</v-icon> Add Account
         </v-btn>
          <v-dialog
             v-model="accountDialog"

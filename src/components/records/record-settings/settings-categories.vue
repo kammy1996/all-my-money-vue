@@ -6,7 +6,7 @@
       <div class="add-categories ml-5 mb-5">    
         <p>Add a New Category</p>
         <v-btn @click="categoryDialog = true" rounded color="success" > 
-        <v-icon class="mr-2">mdi-shape</v-icon> Add Category
+        <v-icon class="mr-2" small>mdi-shape</v-icon> Add Category
         </v-btn>
         <v-dialog
             v-model="categoryDialog"
@@ -65,17 +65,31 @@
           </v-dialog>
       </div>
       <v-divider class="mb-5 "></v-divider>
-      <div class="your-categories ml-5">
-      <b>Your Categories</b>
+      <div class="your-categories">
+      <b class="ml-5">Your Categories</b>
       <div class="space-30"></div>
         <v-data-table
           :headers="headers"
           :items="categories"
-          class="elevation-1"
         >
           <template v-slot:item.name="{ item }">
             <v-icon>{{ item.icon }}</v-icon>
             {{ item.name }}
+          </template>
+           <template v-slot:item.action="{ item }">
+            <v-icon
+              small
+              class="mr-2"
+              @click="editItem(item)"
+            >
+              mdi-pencil
+            </v-icon>
+            <v-icon
+              small
+              @click="deleteItem(item)"
+            >
+              mdi-delete
+            </v-icon>
           </template>
         </v-data-table>
       </div>
@@ -103,7 +117,7 @@ export default {
           name:'Shopping',
           color:'cyan',
           icon:'mdi-shopping',
-          status:'Default'
+          status:'Default',
         },
         {
           name:'Food',

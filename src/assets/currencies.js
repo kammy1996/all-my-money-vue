@@ -432,7 +432,7 @@ var currencies = [
 		"name_plural": "Israeli new sheqels"
 	},
 	{
-		"symbol": "Rs",
+		"symbol": "mdi-currency-inr",
 		"name": "Indian Rupee",
 		"symbol_native": "টকা",
 		"decimal_digits": 2,

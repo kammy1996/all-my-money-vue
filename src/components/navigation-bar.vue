@@ -73,12 +73,11 @@
         </template>
 
         <v-list>
-          <v-list-item
-            v-for="n in 5"
-            :key="n"
-            @click="() => {}"
-          >
-            <v-list-item-title>Option {{ n }}</v-list-item-title>
+            <v-list-item>
+            <v-list-item-title  list-item-title>Profile</v-list-item-title>
+          </v-list-item>
+            <v-list-item>
+            <v-list-item-title @click="logout" class='cursor-pointer' list-item-title>Log out</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -87,6 +86,8 @@
 </template>
 
 <script>
+import Cookie from 'js-cookie';
+
   export default {
     name: 'NavigationBar',
     data() {
@@ -94,6 +95,15 @@
         
       }
     },
+    methods :{
+      logout() {
+        Cookie.remove('token');
+        this.$store.commit('user/USER_LOG_OUT');
+        setTimeout(() => {  
+          this.$router.push({name: 'LoginForm'});
+        }, 500);
+      }
+    }
   }
 </script>
 <style scoped>
@@ -101,6 +111,5 @@
     color:white;
     text-decoration: none;
   }
-
  
 </style>

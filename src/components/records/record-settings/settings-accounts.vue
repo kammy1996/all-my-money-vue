@@ -68,7 +68,7 @@
                 <div class="row">
                     <div class="col-md-8">
                       <v-text-field   
-                          v-model="account.name"
+                          v-model="account.amount"
                           label="Starting Amount"
                           dense
                           outlined
@@ -80,10 +80,15 @@
                           outlined    
                           label="Currency"
                           v-model="account.currency"
-                          :items="items"
-                          item-text="name"
+                          :items="currencies"
+                          item-text="code"
                           dense
                           >
+                        <template v-slot:item="{ item }">
+                          <p>
+                          <v-icon size="medium"> {{ item.symbol }} </v-icon> 
+                          {{ item.code }} </p>
+                        </template>
                         </v-select>
                     </div>
                 </div>
@@ -92,7 +97,7 @@
                     <v-btn class="mr-5 px-10" @click="closeAccountDialog"  large color="rgba(0,0,0,0.8)" dark
                       >Cancel</v-btn
                     >
-                    <v-btn class="px-12" large color="success">Save</v-btn>
+                    <v-btn class="px-12" @click="addAccount" large color="success">Save</v-btn>
                   </div>
               </div>
             </v-card>
@@ -142,6 +147,8 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name:"SettingsAccounts",
   data() {
@@ -162,6 +169,14 @@ export default {
         }, 
         {
           name:'Savings Account',
+          icon:'mdi-bank'
+        },
+        {
+          name:'Debit Card',
+          icon:'mdi-credit-card'
+        },
+        {
+          name:'Current Account',
           icon:'mdi-bank'
         }
       ],
@@ -191,9 +206,25 @@ export default {
       accountDialog:false,
     }
   },
+  computed: {
+    ...mapGetters('records',{
+      currencies: 'GET_CURRENCIES'
+    }) 
+  },
   methods: { 
     closeAccountDialog() {
       this.accountDialog = false;
+    },
+    addAccount() {
+      console.log(`account_info`,this.account)
+      //write an action   
+      this.$store.dispatch(`records/ADD_ACCOUNT`, this.account)
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err =>{
+        console.log(err)
+      })
     }
   }
 }
@@ -207,6 +238,4 @@ export default {
   .v-data-table-header { 
     background:rgba(0,0,0,0.03)
   }
-
-
 </style>

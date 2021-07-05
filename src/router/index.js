@@ -1,11 +1,17 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Cookie from 'js-cookie';
+import Store from '../store'
 
 Vue.use(VueRouter);
 
 
 const routes = [
+    {
+    path:'/',
+    name:'Dashboard',
+    component:() => import(`../views/dashboard.vue`) ,
+     meta: { requiresAuth: true },
+  },
   {
     path:'/login',
     name:'LoginForm',
@@ -31,12 +37,6 @@ const routes = [
      meta: { requiresAuth: true },
   },
   {
-    path:'/',
-    name:'Dashboard',
-    component:() => import(`../views/dashboard.vue`) ,
-     meta: { requiresAuth: true },
-  },
-  {
     path:'/networth',
     name:'Networth',
     component:() => import(`../views/networth.vue`),
@@ -53,6 +53,10 @@ const routes = [
     name:'Subscription',
     component:() => import(`../views/subscription.vue`),
      meta: { requiresAuth: true },
+  },
+  {
+    path:'*',
+    redirect:'/login'
   } 
 ]
 
@@ -61,18 +65,19 @@ const router = new VueRouter({
   mode:'history'
 })
 
-router.beforeEach((to, from, next) => {
-  const token = Cookie.get('token');
+
+router.beforeEach((to,from,next) => {
+  const authStatus = Store.getters[`user/GET_USER_AUTHENTICATION_STATUS`];
+
   if(to.meta.disableIfLoggedIn) {
-    if(token != undefined) next('/');
+    if(authStatus) next('/');
   }
 
-  if (to.meta.requiresAuth) {
-    if (token == undefined) next('/login');
+   if(to.meta.requiresAuth) {
+    if(!authStatus) next ('/login')
     else next();
-  } else {
-    next();
-  }
+  } 
+  next();
 });
 
 

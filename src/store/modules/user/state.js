@@ -1,5 +1,6 @@
 const state = { 
-  userInfo:{}
+  userInfo:{},
+  isAuthenticated:false,
 }
 
 export default state;

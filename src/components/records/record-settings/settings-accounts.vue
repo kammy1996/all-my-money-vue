@@ -208,17 +208,20 @@ export default {
   },
   computed: {
     ...mapGetters('records',{
-      currencies: 'GET_CURRENCIES'
+      currencies: 'GET_CURRENCIES',
+      user:'user/GET_USER_INFO'
     }) 
-  },
+  },  
   methods: { 
     closeAccountDialog() {
       this.accountDialog = false;
     },
     addAccount() {
-      console.log(`account_info`,this.account)
       //write an action   
-      this.$store.dispatch(`records/ADD_ACCOUNT`, this.account)
+      this.$store.dispatch(`records/ADD_ACCOUNT`, { 
+          token: this.user.token,
+          account: this.account
+        })
       .then(res => {
         console.log(res)
       })

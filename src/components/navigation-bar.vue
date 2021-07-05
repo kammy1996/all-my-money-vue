@@ -85,8 +85,8 @@
   </div>
 </template>
 
+
 <script>
-import Cookie from 'js-cookie';
 
   export default {
     name: 'NavigationBar',
@@ -97,11 +97,11 @@ import Cookie from 'js-cookie';
     },
     methods :{
       logout() {
-        Cookie.remove('token');
         this.$store.commit('user/USER_LOG_OUT');
+        this.$store.commit('user/AUTHENTICATE_USER',false);
         setTimeout(() => {  
           this.$router.push({name: 'LoginForm'});
-        }, 500);
+        }, 300);
       }
     }
   }

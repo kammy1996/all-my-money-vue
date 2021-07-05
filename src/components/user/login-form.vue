@@ -92,6 +92,7 @@ export default {
   //   Snackbar,
   // },
   mounted() {
+    this.$Progress.finish()
   },
   methods: {
     login() {
@@ -103,14 +104,13 @@ export default {
           password: this.user.password,
         };
         this.snackbar = {};
-
         this.$store
           .dispatch(`user/USER_LOGIN`, user)
-          .then((res) => {
-            if (res.token) Cookie.set('token', res.token);
+          .then(() => {
+            this.$store.commit(`user/AUTHENTICATE_USER`,true);
             setTimeout(() => {    
               this.$router.push({ name: 'Dashboard' }); 
-            }, 500);
+            }, 300);
           
           })
           .catch((err) => {

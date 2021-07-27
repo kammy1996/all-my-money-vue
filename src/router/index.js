@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Store from '../store'
+import Cookie from 'js-cookie';
 
 Vue.use(VueRouter);
 
@@ -67,7 +67,7 @@ const router = new VueRouter({
 
 
 router.beforeEach((to,from,next) => {
-  const authStatus = Store.getters[`user/GET_USER_AUTHENTICATION_STATUS`];
+  const authStatus = Cookie.get('token');
 
   if(to.meta.disableIfLoggedIn) {
     if(authStatus) next('/');

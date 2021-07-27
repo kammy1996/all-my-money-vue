@@ -1,4 +1,5 @@
-import axios from 'axios';
+import axios from '@/helpers/axiosConfig';
+
 
 export const REGISTER_USER = (context,payload) => {
   return new Promise((resolve,reject) => {
@@ -25,7 +26,6 @@ export const USER_LOGIN = (context,payload) => {
     })
     .then((res) => {
       resolve(res.data)
-      context.commit(`LOGIN_USER`,res.data)
     })
     .catch((err) => {
       reject(err)

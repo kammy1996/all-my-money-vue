@@ -98,7 +98,6 @@ export default {
     login() {
       this.$refs.login.validate();
       if (this.valid) {
-        Cookie.remove(`token`);
         const user = {
           email: this.user.email,
           password: this.user.password,
@@ -106,12 +105,16 @@ export default {
         this.snackbar = {};
         this.$store
           .dispatch(`user/USER_LOGIN`, user)
-          .then(() => {
-            this.$store.commit(`user/AUTHENTICATE_USER`,true);
-            setTimeout(() => {    
-              this.$router.push({ name: 'Dashboard' }); 
-            }, 300);
-          
+          .then((res) => {
+            Cookie.set('token',res.token);
+
+            if(Cookie.get(`token`)) {
+              this.$store.commit(`user/LOGIN_USER`,res)
+              this.$store.commit(`user/AUTHENTICATE_USER`,true);
+              setTimeout(() => {    
+                this.$router.push({ name: 'Dashboard' }); 
+              }, 300);
+            }
           })
           .catch((err) => {
             console.log(err)
@@ -131,8 +134,7 @@ export default {
         .then(GoogleUser => {
           // on success do something
           this.$store.dispatch('AUTHENTICATE_GOOGLE_USER',GoogleUser)
-          .then((res) => {
-            if (res.token) Cookie.set('token', res.token);
+          .then(() => {
             this.snackbar = {
               show: true,
               color: `green`,

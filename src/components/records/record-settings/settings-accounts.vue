@@ -209,8 +209,7 @@ export default {
   computed: {
     ...mapGetters('records',{
       currencies: 'GET_CURRENCIES',
-      user:'user/GET_USER_INFO'
-    }) 
+    }),
   },  
   methods: { 
     closeAccountDialog() {
@@ -219,7 +218,6 @@ export default {
     addAccount() {
       //write an action   
       this.$store.dispatch(`records/ADD_ACCOUNT`, { 
-          token: this.user.token,
           account: this.account
         })
       .then(res => {

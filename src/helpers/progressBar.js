@@ -1,15 +1,16 @@
+
 const options = {
-  color: '#1976D2',
+  color:'white',
   failedColor: '#874b4b',
-  thickness: '5px',
+  thickness: '4px',
   transition: {
     speed: '1s',
-    opacity: '0.6s',
-    termination: 300
+    opacity: '0.8s',
+    termination: 900
   },
   autoRevert: true,
   location: 'top',
-  inverse: false
+  inverse: false 
 }
 
 export default options;

@@ -6,7 +6,9 @@ const instance = axios.create({
   baseURL: process.env.VUE_APP_HOST_URL,
 }); 
 
-instance.defaults.headers.common['Authorization'] = Cookie.get('token')
+if(Cookie.get(`token`)) { 
+  instance.defaults.headers.common['Authorization'] = Cookie.get('token')
+}
 
 instance.interceptors.request.use(config => {
   app.$Progress.start();
@@ -16,6 +18,9 @@ instance.interceptors.request.use(config => {
 instance.interceptors.response.use(response => {
   app.$Progress.finish();
   return response;
+},(err) => {
+  app.$Progress.fail();
+  return err
 })
 
 export default instance;

@@ -102,9 +102,9 @@ import Cookie from 'js-cookie';
         if(Cookie.get(`token`) == undefined) { 
           this.$store.commit('user/USER_LOG_OUT');
           this.$store.commit('user/AUTHENTICATE_USER',false);
-          setTimeout(() => {  
-            this.$router.push({name: 'LoginForm'});
-          }, 300);
+          this.$router.go(); 
+          this.$router.push({name: 'LoginForm'});
+        
         }
       }
     }

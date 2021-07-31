@@ -107,13 +107,11 @@ export default {
           .dispatch(`user/USER_LOGIN`, user)
           .then((res) => {
             Cookie.set('token',res.token);
-
+            this.$router.go();
             if(Cookie.get(`token`)) {
               this.$store.commit(`user/LOGIN_USER`,res)
               this.$store.commit(`user/AUTHENTICATE_USER`,true);
-              setTimeout(() => {    
-                this.$router.push({ name: 'Dashboard' }); 
-              }, 300);
+              this.$router.push({ name: 'Dashboard' }); 
             }
           })
           .catch((err) => {

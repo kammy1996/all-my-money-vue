@@ -3,6 +3,7 @@
      <v-app-bar
       color="blue accent-4"
       dark
+      fixed
     >
       <v-toolbar-title><v-icon>mdi-cash</v-icon> All My Money</v-toolbar-title>
       <v-row class='mx-15'>
@@ -99,12 +100,12 @@ import Cookie from 'js-cookie';
     methods :{
       logout() {
         Cookie.remove('token');
+        this.$store.commit(`RESET_ALL_MODULES`)
         if(Cookie.get(`token`) == undefined) { 
           this.$store.commit('user/USER_LOG_OUT');
           this.$store.commit('user/AUTHENTICATE_USER',false);
           this.$router.go(); 
-          this.$router.push({name: 'LoginForm'});
-        
+          this.$router.push({name: 'LoginForm'}); 
         }
       }
     }

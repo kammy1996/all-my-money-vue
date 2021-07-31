@@ -9,6 +9,11 @@ import { user } from '@/store/modules/user/index';
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
+  mutations: { 
+    RESET_ALL_MODULES(state) { 
+      Object.keys(state).forEach(key => state[key] = {})
+    }
+  },
   modules: {
     records,
     user

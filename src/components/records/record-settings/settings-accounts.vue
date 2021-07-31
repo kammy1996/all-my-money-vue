@@ -36,9 +36,9 @@
                           text
                         >
                           <v-icon
-                            v-if="account.color"
+                            v-if="account"
                             class="mr-1"
-                            :color="accountState == 'create' ? account.color.hex : account.color"
+                            :color="account.color"
                             >mdi-circle</v-icon
                           >
                           <v-icon v-else class="mr-1">mdi-palette</v-icon>
@@ -46,9 +46,8 @@
                         </v-btn>
                       </template>
                       <v-color-picker
-                        v-model="account.color"
+                        @update:color="setAccountColor"
                         dot-size="25"
-                        hex
                         swatches-max-height="200"
                       ></v-color-picker>
                     </v-menu>
@@ -149,8 +148,8 @@
             </v-icon>
             {{ item.type }}
           </template>
-          <template v-slot:item.balance="{ item }">
-            <v-icon small>
+          <template  v-slot:item.balance="{ item }">
+            <v-icon small v-if="item.startBalance">
               {{ item.currency }}
             </v-icon>
             {{ item.startBalance }}
@@ -270,6 +269,9 @@ export default {
     },
   },
   methods: {
+    setAccountColor(val) { 
+      this.$set(this.account,'color',val.hex);
+    },
     getAllAccounts() { 
       this.$store.dispatch(`records/GET_ALL_ACCOUNTS`)
     },
@@ -310,20 +312,18 @@ export default {
         })
         .then(() => { 
           this.accountDialog = false;
+          this.$refs.account.reset();
           this.account = {};
-          this.$refs[`account`].reset();
         })
       }
     },
     addAccount(){
-      this.account = {};
+      this.account= {};
       this.accountState="create";
       this.accountDialog = true;
     },
     saveAccount() {
-      if (this.account.color && this.account.color.hex) {
-        this.account.color = this.account.color.hex;
-      }
+      if(this.account && !this.account.color) this.account.color= '#ffff';
       this.$refs[`account`].validate();
       if (this.formValid) {
         this.$store
@@ -331,7 +331,9 @@ export default {
             account: this.account,
           })
           .then(() => {
-            this.accountDialog = false;
+            this.accountDialog = false;     
+            this.$refs.account.reset();
+            this.account = {};
           })
       }
     },

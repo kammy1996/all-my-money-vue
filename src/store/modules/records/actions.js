@@ -5,7 +5,9 @@ export const ADD_ACCOUNT = (context,payload) => {
     axios({
       method :'post',
       url:'/records/account',
-      data:payload,
+      data: { 
+        account: payload 
+      }
     })
     .then(res => {
       context.commit('ADD_ACCOUNT',res.data)
@@ -23,9 +25,11 @@ export const UPDATE_ACCOUNT = (context,payload) => {
       method :'put',
       url:'/records/account',
       params: { 
-        id:payload.account.id
+        id:payload.id
       },
-      data:payload,
+      data: { 
+        account: payload
+      }
     })
     .then(res => {
       context.commit('UPDATE_ACCOUNT',res.data);
@@ -64,6 +68,82 @@ export const GET_ALL_ACCOUNTS = (context) => {
     })
     .then(res => {
       context.commit('SET_ALL_ACCOUNTS',res.data);
+      resolve(res.data)
+    })
+    .catch(err => {
+      reject(err)
+    })
+  })
+}
+
+export const ADD_CATEGORY = (context,payload) => {
+  return new Promise((resolve,reject) => {
+    axios({
+      method :'post',
+      url:'/records/category',
+      data:{ 
+        category: payload 
+      }
+    })
+    .then(res => {
+      context.commit('ADD_CATEGORY',res.data);
+      resolve(res.data)
+    })
+    .catch(err => {
+      reject(err)
+    })
+  })
+}
+
+export const UPDATE_CATEGORY = (context,payload) => {
+  return new Promise((resolve,reject) => {
+    axios({
+      method :'put',
+      url:'/records/category',
+      data:{ 
+        category: payload 
+      },
+      params:{
+        id: payload.id
+      }
+    })
+    .then(res => {
+      context.commit('UPDATE_CATEGORY',res.data);
+      resolve(res.data)
+    })
+    .catch(err => {
+      reject(err)
+    })
+  })
+}
+
+export const DELETE_CATEGORY = (context,payload) => {
+  return new Promise((resolve,reject) => {
+    axios({
+      method :'DELETE',
+      url:'/records/category',
+      params:{
+        id: payload
+      }
+    })
+    .then(res => {
+      context.commit('DELETE_CATEGORY',payload);
+      resolve(res.data)
+    })
+    .catch(err => {
+      reject(err)
+    })
+  })
+}
+
+export const GET_ALL_CATEGORIES = (context) => {
+  return new Promise((resolve,reject) => {
+    axios({
+      method :'get',
+      url:'/records/category',
+    })
+    .then(res => {
+      context.commit('SET_ALL_CATEGORIES',res.data);
       resolve(res.data)
     })
     .catch(err => {

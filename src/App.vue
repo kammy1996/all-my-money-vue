@@ -2,6 +2,7 @@
   <v-app>
     <v-main>
       <NavigationBar v-if="isAuthenticated" />
+      <div :class="isAuthenticated ? 'space-50' : ''"></div>
       <router-view/>
       <vue-progress-bar></vue-progress-bar>
     </v-main>

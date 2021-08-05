@@ -5,3 +5,7 @@ export const GET_CURRENCIES = (state) => {
 export const GET_ACCOUNTS = (state) => {
   return state.accounts;
 }
+
+export const GET_CATEGORIES = (state) => {
+  return state.categories;
+}

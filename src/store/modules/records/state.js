@@ -1,4 +1,33 @@
 const state = { 
+  accounts:[],
+  categories: [
+    {
+      name:'Shopping',
+      icon:'mdi-shopping',
+      status:'Default',
+    },
+    {
+      name:'Food',
+      icon:'mdi-food-fork-drink',
+      status:'Default'
+    },
+    {
+      name:'Utilities',
+      icon:'mdi-toolbox',
+      status:'Default'
+    },
+    {
+      name:'Vehicle',
+      icon:'mdi-car',
+      status:'Default'
+    },
+    {
+      name:'Home Expense',
+      icon:'mdi-home',
+      status:'Default'
+    },
+
+  ],
   currencies : [
       {
       "symbol": "mdi-currency-inr",
@@ -10,7 +39,6 @@ const state = {
       "name_plural": "Indian rupees"
     },
   ],
-  accounts:[],
 }
 
 export default state;

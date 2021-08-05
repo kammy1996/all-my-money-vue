@@ -127,7 +127,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   width:500px;
-  background: white;
+  background: white;  
   padding:10px;
   margin-right:-30px;
 }

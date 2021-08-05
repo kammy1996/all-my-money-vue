@@ -73,7 +73,7 @@
                 <div class="row">
                   <div class="col-md-8">
                     <v-text-field
-                      v-model="account.startBalance"
+                      v-model="account.balance"
                       label="Starting Amount"
                       type="number"
                       dense
@@ -149,10 +149,10 @@
             {{ item.type }}
           </template>
           <template  v-slot:item.balance="{ item }">
-            <v-icon small v-if="item.startBalance">
+            <v-icon small v-if="item.balance">
               {{ item.currency }}
             </v-icon>
-            {{ item.startBalance }}
+            {{ item.balance }}
           </template>
           <template v-slot:item.last-updated="{ item }">
             {{ item.lastUpdated | lastUpdated }}
@@ -167,43 +167,20 @@
           </template>
         </v-data-table>
       </div>
-       <v-dialog
-        v-model="deleteDialog"
-        max-width="450"
-      >
-        <v-card class="pa-5">
-          
-          <h3>
-            Account "{{ account.name }}" will be permanently deleted ? 
-          </h3>
-          <div class="space-30"></div>
-          <v-card-actions >
-            <v-spacer></v-spacer>
-
-            <v-btn
-              color="grey"
-              dark
-              @click="deleteDialog = false"
-            >
-              Cancel
-            </v-btn>
-
-            <v-btn
-              color="red"
-              dark
-              @click="deleteAccount"
-            >
-              Yes
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+       <BooleanDialog
+          :dialog="deleteDialog"
+          :name="account.name"
+          :type="'Account'"
+          @confirmed="deleteAccount"
+          @cancelled="deleteDialog = false"
+        > </BooleanDialog>
     </v-card>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex';
 import moment from 'moment';
+import BooleanDialog from '@/components/common/boolean-dialog';
 
 export default {
   name: 'SettingsAccounts',
@@ -254,6 +231,9 @@ export default {
       accountDialog: false,
     };
   },
+  components: {
+    BooleanDialog  
+  },
   mounted() { 
     this.getAllAccounts();
   },
@@ -276,7 +256,8 @@ export default {
       this.$store.dispatch(`records/GET_ALL_ACCOUNTS`)
     },
     typeIcon(val) {
-      return this.accountTypes.filter((type) => type.name == val)[0].icon;
+      const selectedType = this.accountTypes.filter((type) => type.name == val);
+      if(selectedType.length) return selectedType[0].icon;
     },
     closeAccountDialog() {
       this.accountDialog = false;
@@ -285,11 +266,11 @@ export default {
       this.accountState = 'update';
       this.accountDialog = true;
 
-      const { name, color, type, startBalance, currency, id} = account;
+      const { name, color, type, balance, currency, id} = account;
       this.account.name = name;
       this.account.color = color;
       this.account.type = type ; 
-      this.account.startBalance = startBalance;
+      this.account.balance = balance;
       this.account.currency = currency;
       this.account.id = id;
     },
@@ -307,9 +288,7 @@ export default {
     updateAccount() {     
       this.$refs[`account`].validate();
       if(this.formValid && this.accountState =='update') { 
-        this.$store.dispatch(`records/UPDATE_ACCOUNT`, { 
-         account:this.account
-        })
+        this.$store.dispatch(`records/UPDATE_ACCOUNT`, this.account)
         .then(() => { 
           this.accountDialog = false;
           this.$refs.account.reset();
@@ -327,9 +306,7 @@ export default {
       this.$refs[`account`].validate();
       if (this.formValid) {
         this.$store
-          .dispatch(`records/ADD_ACCOUNT`, {
-            account: this.account,
-          })
+          .dispatch(`records/ADD_ACCOUNT`, this.account)
           .then(() => {
             this.accountDialog = false;     
             this.$refs.account.reset();

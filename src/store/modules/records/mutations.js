@@ -53,10 +53,44 @@ export const SET_ALL_CATEGORIES = (state,payload) => {
   })
 }
 
+
 export const DELETE_CATEGORY = (state,payload) => { 
   let categoryIndex = state.categories.findIndex(i => i.id == payload);
   if(categoryIndex >= 0) { 
     state.categories.splice(categoryIndex,1)
+  }
+}
+
+export const ADD_LABEL = (state,payload ) => {
+  let labelIndex = state.labels.findIndex(i => i.id == payload.id)
+  if(labelIndex < 0) { 
+    state.labels.push(payload);
+  }
+}
+
+export const SET_ALL_LABELS = (state,payload) => { 
+  payload.forEach(item => {
+    let checkExist = state.labels.findIndex(cat => cat.id == item.id) 
+    if(checkExist < 0) {    
+      state.labels.push(item)
+    }
+  })
+}
+
+
+export const UPDATE_LABEL = (state,payload) => { 
+  console.log(`payload`,payload)
+  let labelIndex = state.labels.findIndex(i => i.id == payload.id);
+  if(labelIndex >= 0) { 
+    state.labels[labelIndex].name = payload.name;
+    state.labels[labelIndex].color = payload.color;
+  }
+}
+
+export const DELETE_LABEL = (state,payload) => { 
+  let labelIndex = state.labels.findIndex(i => i.id == payload);
+  if(labelIndex >= 0) { 
+    state.labels.splice(labelIndex,1)
   }
 }
 

@@ -152,3 +152,79 @@ export const GET_ALL_CATEGORIES = (context) => {
   })
 }
 
+export const ADD_LABEL = (context,payload) => {
+  return new Promise((resolve,reject) => {
+    axios({
+      method :'post',
+      url:'/records/label',
+      data: { 
+        label:payload
+      }
+    })
+    .then(res => {
+      context.commit('ADD_LABEL',res.data);
+      resolve(res.data)
+    })
+    .catch(err => {
+      reject(err)
+    })
+  })
+}
+
+export const GET_ALL_LABELS = (context) => {
+  return new Promise((resolve,reject) => {
+    axios({
+      method :'get',
+      url:'/records/label',
+    })
+    .then(res => {
+      context.commit('SET_ALL_LABELS',res.data);
+      resolve(res.data)
+    })
+    .catch(err => {
+      reject(err)
+    })
+  })
+}
+
+export const UPDATE_LABEL = (context,payload) => {
+  return new Promise((resolve,reject) => {
+    axios({
+      method :'put',
+      url:'/records/label',
+      data:{ 
+        label: payload 
+      },
+      params:{
+        id: payload.id
+      }
+    })
+    .then(res => {
+      context.commit('UPDATE_LABEL',res.data);
+      resolve(res.data)
+    })
+    .catch(err => {
+      reject(err)
+    })
+  })
+}
+
+
+export const DELETE_LABEL = (context,payload) => {
+  return new Promise((resolve,reject) => {
+    axios({
+      method :'DELETE',
+      url:'/records/label',
+      params:{
+        id: payload
+      }
+    })
+    .then(res => {
+      context.commit('DELETE_LABEL',payload);
+      resolve(res.data)
+    })
+    .catch(err => {
+      reject(err)
+    })
+  })
+}

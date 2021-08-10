@@ -9,3 +9,7 @@ export const GET_ACCOUNTS = (state) => {
 export const GET_CATEGORIES = (state) => {
   return state.categories;
 }
+
+export const GET_LABELS = (state) => {
+  return state.labels;
+}

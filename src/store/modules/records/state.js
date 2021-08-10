@@ -1,5 +1,6 @@
 const state = { 
   accounts:[],
+  labels:[],
   categories: [
     {
       name:'Shopping',

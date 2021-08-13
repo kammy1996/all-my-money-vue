@@ -5,6 +5,7 @@ import createPersistedState from "vuex-persistedstate";
 
 import { records } from '@/store/modules/records/index';
 import { user } from '@/store/modules/user/index';
+import { general } from '@/store/modules/general/index';
 
 Vue.use(Vuex);
 
@@ -16,7 +17,8 @@ const store = new Vuex.Store({
   },
   modules: {
     records,
-    user
+    user,
+    general
   },
   plugins: [createPersistedState()]
 })

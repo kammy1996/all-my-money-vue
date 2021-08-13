@@ -1,28 +1,34 @@
 const state = { 
+  records:[],
   accounts:[],
   labels:[],
   categories: [
     {
+      id:'1',
       name:'Shopping',
       icon:'mdi-shopping',
       status:'Default',
     },
     {
+      id:'2',
       name:'Food',
       icon:'mdi-food-fork-drink',
       status:'Default'
     },
     {
+      id:'3',
       name:'Utilities',
       icon:'mdi-toolbox',
       status:'Default'
     },
     {
+      id:'4',
       name:'Vehicle',
       icon:'mdi-car',
       status:'Default'
     },
     {
+      id:'5',
       name:'Home Expense',
       icon:'mdi-home',
       status:'Default'

@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      <h3 class="settings-title mb-3 ml-5 pt-5">CATEGORIES</h3>
+      <h3 class=" mb-3 ml-5 pt-5">CURRENCIES</h3>
       <v-divider class="mb-5 "></v-divider>
       <div class="add-categories ml-5 mb-5">    
         <p>Add a New Currency</p>
@@ -13,7 +13,7 @@
             width="500"
           >
             <v-card>
-                <h2 class="px-5 py-3 settings-title">Add Currency</h2>
+                <h2 class="px-5 py-3 ">Add Currency</h2>
                 <v-divider></v-divider>
                 <div class="space-20"></div>
                 <div class="pa-5">
@@ -109,8 +109,15 @@ export default {
   },
   mounted() {
     this.currencies = Currencies
+    this.getCurrencyRates();
   },
   methods: { 
+    getCurrencyRates() { 
+      this.$store.dispatch(`records/GET_CURRENCY_RATES`)
+      .then((res) => { 
+        console.log(res)
+      })
+    },
     closeCurrencyDialog() {
       this.currencyDialog = false;
     },
@@ -119,10 +126,7 @@ export default {
 </script>
 
 <style >
-  .settings-title { 
-    color: rgba(0,0,0,0.7);
-    
-  }
+
  .flex-container {
   display: flex;
   flex-wrap: wrap;

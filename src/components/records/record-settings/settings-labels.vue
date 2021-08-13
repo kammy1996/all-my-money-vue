@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      <h3 class="settings-title mb-3 ml-5 pt-5">CATEGORIES</h3>
+      <h3 class=" mb-3 ml-5 pt-5">LABELS</h3>
       <v-divider class="mb-5 "></v-divider>
       <div class="add-categories ml-5 mb-5">    
         <p>Add a New Label</p>
@@ -13,7 +13,7 @@
             width="500"
           >
             <v-card>
-                <h2 class="px-5 py-3 settings-title">Add Label</h2>
+                <h2 class="px-5 py-3 ">Add Label</h2>
                 <v-divider></v-divider>
                 <div class="space-20"></div>
                 <div class="pa-5">
@@ -45,6 +45,7 @@
                             </template>
                             <v-color-picker
                             @update:color="setLabelColor"
+                            value="#ffff"
                             v-model="label.color"
                             dot-size="25"
                             swatches-max-height="200"
@@ -158,7 +159,7 @@ export default {
   computed: { 
     ...mapGetters({
       labels :'records/GET_LABELS'
-    })
+    }),
   },
   mounted() {
     this.getAllLabels();
@@ -174,6 +175,7 @@ export default {
       this.$set(this.label,'color',val.hex);
     },
     addLabel() {
+      
       this.label={};
       this.labelDialog = true;
       this.labelState = "create";
@@ -186,6 +188,7 @@ export default {
         .then(() => { 
           this.labelDialog = false;
           this.$refs.label.reset();
+          delete this.label.color;
           this.label = {}
         })
       }
@@ -225,10 +228,7 @@ export default {
 </script>
 
 <style >
-  .settings-title { 
-    color: rgba(0,0,0,0.7);
-    
-  }
+
  .flex-container {
   display: flex;
   flex-wrap: wrap;

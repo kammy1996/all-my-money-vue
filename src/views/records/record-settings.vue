@@ -70,9 +70,6 @@
                 <div v-if="currentView == 'accounts'">
                   <SettingsAccounts />
                 </div>
-                <div v-if="currentView == 'currency'">
-                  <SettingsCurrency />
-                </div>
                 <div v-if="currentView == 'categories'">
                   <SettingsCategories />
                 </div>
@@ -91,7 +88,6 @@ import SettingsAccounts from '../../components/records/record-settings/settings-
 import SettingsCategories from '../../components/records/record-settings/settings-categories';
 import SettingsGeneral from '../../components/records/record-settings/settings-general';
 import SettingsLabels from '../../components/records/record-settings/settings-labels';
-import SettingsCurrency from '../../components/records/record-settings/settings-currency';
 
 export default {
   name:'RecordSettings',
@@ -100,7 +96,6 @@ export default {
       items: [
         { title: 'General', icon: 'mdi-cog',key:'general' },
         { title: 'Accounts', icon: 'mdi-bank',key:'accounts' },
-        { title: 'Currency', icon: 'mdi-currency-inr', key:'currency' },
         { title: 'Categories', icon: 'mdi-shape',key:'categories' },
         { title: 'Labels', icon: 'mdi-label',key:'labels' },
       ],
@@ -124,7 +119,6 @@ export default {
     SettingsCategories,
     SettingsGeneral,
     SettingsLabels,
-    SettingsCurrency
   
   },
   methods: {

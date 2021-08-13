@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      <h3 class="settings-title mb-3 ml-5 pt-5">ACCOUNTS</h3>
+      <h3 class=" mb-3 ml-5 pt-5">ACCOUNTS</h3>
       <v-divider class="mb-5 "></v-divider>
       <div class="add-categories ml-5 mb-5">
         <p>Add a New Account</p>
@@ -10,7 +10,7 @@
         </v-btn>
         <v-dialog v-model="accountDialog" width="500">
           <v-card>
-            <h2 class="px-5 py-3 settings-title">Add Account</h2>
+            <h2 class="px-5 py-3 ">Add Account</h2>
             <v-divider></v-divider>
             <div class="space-20"></div>
             <div class="pa-5">
@@ -301,8 +301,12 @@ export default {
       this.accountState="create";
       this.accountDialog = true;
     },
+    getAccountTypeIcon(type) { 
+      return this.accountTypes.filter(t => t.name == type )[0].icon;
+    },
     saveAccount() {
       if(this.account && !this.account.color) this.account.color= '#ffff';
+      if(this.account.type) this.account.typeIcon = this.getAccountTypeIcon(this.account.type)
       this.$refs[`account`].validate();
       if (this.formValid) {
         this.$store
@@ -319,9 +323,7 @@ export default {
 </script>
 
 <style>
-.settings-title {
-  color: rgba(0, 0, 0, 0.7);
-}
+
 
 .v-data-table-header {
   background: rgba(0, 0, 0, 0.03);

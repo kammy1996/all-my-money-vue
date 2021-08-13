@@ -13,3 +13,7 @@ export const GET_CATEGORIES = (state) => {
 export const GET_LABELS = (state) => {
   return state.labels;
 }
+
+export const GET_RECORDS = (state) => {
+  return state.records;
+}

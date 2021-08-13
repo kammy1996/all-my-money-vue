@@ -228,3 +228,23 @@ export const DELETE_LABEL = (context,payload) => {
     })
   })
 }
+
+
+export const ADD_RECORD = (context,payload) => {
+  return new Promise((resolve,reject) => {
+    axios({
+      method :'post',
+      url:'/records',
+      data: { 
+        record: payload 
+      }
+    })
+    .then(res => {
+      context.commit('ADD_RECORD',res.data)
+      resolve(res.data)
+    })
+    .catch(err => {
+      reject(err)
+    })
+  })
+}

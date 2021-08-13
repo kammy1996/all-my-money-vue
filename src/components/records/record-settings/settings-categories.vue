@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      <h3 class="settings-title mb-3 ml-5 pt-5">CATEGORIES</h3>
+      <h3 class=" mb-3 ml-5 pt-5">CATEGORIES</h3>
       <v-divider class="mb-5 "></v-divider>
       <div class="add-categories ml-5 mb-5">
         <p>Add a New Category</p>
@@ -10,7 +10,7 @@
         </v-btn>
         <v-dialog v-model="categoryDialog" width="500">
           <v-card>
-            <h2 class="px-5 py-3 settings-title">Add Category</h2>
+            <h2 class="px-5 py-3 ">Add Category</h2>
             <v-divider></v-divider>
             <div class="space-20"></div>
             <div class="pa-5">
@@ -20,6 +20,7 @@
                     <v-text-field
                       v-model="category.name"
                       label="Category Name"
+                      :rules="[(v) => !!v || 'Category Name is required']"
                       dense
                       outlined
                     ></v-text-field>
@@ -230,9 +231,7 @@ export default {
 </script>
 
 <style>
-.settings-title {
-  color: rgba(0, 0, 0, 0.7);
-}
+
 .flex-container {
   display: flex;
   flex-wrap: wrap;

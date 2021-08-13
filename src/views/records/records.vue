@@ -39,10 +39,20 @@ export default {
     return {
     };
   },
+  mounted() { 
+    this.getRecordDependencies();
+  },
   components: {
     AddRecord,
     RecordsList,
   },
+  methods: { 
+     getRecordDependencies() { 
+       this.$store.dispatch(`records/GET_ALL_CATEGORIES`);
+       this.$store.dispatch(`records/GET_ALL_LABELS`);
+       this.$store.dispatch(`records/GET_ALL_ACCOUNTS`);
+    }
+  }
 };
 </script>
 <style>

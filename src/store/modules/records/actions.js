@@ -248,3 +248,61 @@ export const ADD_RECORD = (context,payload) => {
     })
   })
 }
+
+export const UPDATE_RECORD = (context,payload) => {
+  return new Promise((resolve,reject) => {
+    axios({
+      method :'put',
+      url:'/records',
+      data: { 
+        record: payload 
+      },
+      params: { 
+        id: payload.id
+      }
+    })
+    .then(res => {
+      context.commit('UPDATE_RECORD',res.data)
+      resolve(res.data)
+    })
+    .catch(err => {
+      reject(err)
+    })
+  })
+}
+
+export const GET_ALL_RECORDS = (context) => { 
+  return new Promise((resolve,reject) => { 
+    axios({
+      method:'GET',
+      url : '/records'
+    })
+    .then(res => { 
+      context.commit(`SET_ALL_RECORDS`,res.data)
+      resolve(res.data)
+    })
+    .catch(err => {
+      reject(err)
+    })
+  })  
+}
+
+
+export const DELETE_RECORD = (context,payload) => {
+  return new Promise((resolve,reject) => {
+    axios({
+      method :'DELETE',
+      url:'/records',
+      params:{
+        id: payload
+      }
+    })
+    .then(res => {
+      context.commit('DELETE_RECORD',payload);
+      resolve(res.data)
+    })
+    .catch(err => {
+      reject(err)
+    })
+  })
+}

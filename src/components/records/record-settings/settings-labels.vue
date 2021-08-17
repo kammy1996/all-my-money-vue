@@ -175,7 +175,6 @@ export default {
       this.$set(this.label,'color',val.hex);
     },
     addLabel() {
-      
       this.label={};
       this.labelDialog = true;
       this.labelState = "create";
@@ -188,7 +187,6 @@ export default {
         .then(() => { 
           this.labelDialog = false;
           this.$refs.label.reset();
-          delete this.label.color;
           this.label = {}
         })
       }

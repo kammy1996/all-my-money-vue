@@ -41,6 +41,7 @@ export default {
   },
   mounted() { 
     this.getRecordDependencies();
+    this.getAllRecords();
   },
   components: {
     AddRecord,
@@ -51,6 +52,9 @@ export default {
        this.$store.dispatch(`records/GET_ALL_CATEGORIES`);
        this.$store.dispatch(`records/GET_ALL_LABELS`);
        this.$store.dispatch(`records/GET_ALL_ACCOUNTS`);
+    },
+    getAllRecords() { 
+      this.$store.dispatch(`records/GET_ALL_RECORDS`);
     }
   }
 };

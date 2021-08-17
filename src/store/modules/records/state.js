@@ -1,6 +1,20 @@
 const state = { 
   records:[],
   accounts:[],
+  recordState:'',
+  recordType:'',
+  record: {
+    id:'',
+    source: '',
+    type:'',
+    account:'',
+    date:'',
+    amount:'',
+    category:'',
+    label:'',
+    note:''
+  },
+  isRecordDialog:false,
   labels:[],
   categories: [
     {

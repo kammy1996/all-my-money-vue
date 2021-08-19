@@ -193,10 +193,16 @@ export default {
       if(!this.category.icon) this.category.icon = defaultIcon;
       if(this.categoryValid) { 
         this.$store.dispatch(`records/ADD_CATEGORY`,this.category)
-        .then(() => { 
+        .then((res) => { 
           this.categoryDialog = false;
           this.category = {}
            this.$refs.category.reset();
+           let snackbar = { 
+              show:true,
+              color:'green',
+              text:`Category ${res.name} has been Sucessfully Added`
+            }
+          this.$store.commit(`general/SHOW_SNACKBAR`,snackbar);
         })
       }
     },
@@ -204,16 +210,28 @@ export default {
       this.$store.dispatch(`records/DELETE_CATEGORY`,this.category.id)
       .then(() => { 
         this.deleteDialog = false
+        let snackbar = { 
+          show:true,
+          color:'green',
+          text:`Category ${this.category.name} has been Sucessfully Deleted`
+        }
+        this.$store.commit(`general/SHOW_SNACKBAR`,snackbar);
       })
     },
     updateCategory() {
       this.$refs.category.validate();
       if(this.categoryValid){ 
         this.$store.dispatch(`records/UPDATE_CATEGORY`,this.category)
-        .then(() => { 
+        .then((res) => { 
           this.categoryDialog = false;
           this.category = {}
           this.$refs.category.reset();
+          let snackbar = { 
+            show:true,
+            color:'green',
+            text:`Category ${res.name} has been Sucessfully Updated`
+          }
+          this.$store.commit(`general/SHOW_SNACKBAR`,snackbar);
         })
       }
     },

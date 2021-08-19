@@ -175,7 +175,6 @@ export default {
       this.$set(this.label,'color',val.hex);
     },
     addLabel() {
-      
       this.label={};
       this.labelDialog = true;
       this.labelState = "create";
@@ -185,11 +184,16 @@ export default {
       this.$refs[`label`].validate();
       if(this.labelValid) { 
         this.$store.dispatch(`records/ADD_LABEL`, this.label)
-        .then(() => { 
+        .then((res) => { 
           this.labelDialog = false;
           this.$refs.label.reset();
-          delete this.label.color;
           this.label = {}
+          let snackbar = { 
+            show:true,
+            color:'green',
+            text:`Label ${res.name} has been Sucessfully Added`
+          }
+          this.$store.commit(`general/SHOW_SNACKBAR`,snackbar);
         })
       }
     },
@@ -204,10 +208,16 @@ export default {
       this.$refs[`label`].validate();
       if(this.labelValid) { 
         this.$store.dispatch(`records/UPDATE_LABEL`, this.label)
-        .then(() => {    
+        .then((res) => {    
           this.labelDialog = false;
           this.$refs.label.reset();
           this.label = {};
+           let snackbar = { 
+            show:true,
+            color:'green',
+            text:`Label ${res.name} has been Sucessfully updated`
+          }
+          this.$store.commit(`general/SHOW_SNACKBAR`,snackbar);
 
         })
       }
@@ -221,6 +231,12 @@ export default {
       this.$store.dispatch(`records/DELETE_LABEL`, this.label.id)
       .then(() => { 
         this.deleteDialog = false;
+         let snackbar = { 
+            show:true,
+            color:'green',
+            text:`Label ${this.label.name} has been Sucessfully Deleted`
+          }
+          this.$store.commit(`general/SHOW_SNACKBAR`,snackbar);
       })
     }
   }

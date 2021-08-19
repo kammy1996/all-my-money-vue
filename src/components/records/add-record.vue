@@ -9,7 +9,7 @@
     >
       <template v-slot:activator="{ on, attrs }">
         
-      <v-btn color="success" v-bind="attrs"
+      <v-btn color="success" @click="openRecordDialog" v-bind="attrs"
         v-on="on" rounded block ><v-icon>mdi-plus</v-icon> Add Record</v-btn>
       </template>
       <v-card>
@@ -20,7 +20,7 @@
           <v-btn
             icon
             dark
-            @click="recordDialog = false"
+            @click="closeRecordDialog"
           >
             <v-icon>mdi-close</v-icon>
           </v-btn>
@@ -39,32 +39,35 @@
         >
           <v-tabs-slider></v-tabs-slider>
 
-          <v-tab href="#income">
+          <v-tab 
+            href="#income">
             Income
             <v-icon>mdi-plus</v-icon>
           </v-tab>
 
-          <v-tab href="#expense">
+          <v-tab  
+            href="#expense">
             Expense
             <v-icon>mdi-minus</v-icon>
           </v-tab>
 
-          <v-tab href="#transfer">
-            Transfer
+          <v-tab 
+             href="#transfer">
+            Transfer  
             <v-icon>mdi-import</v-icon>
           </v-tab>
 
           <v-tab-item id="income">
             <record-income-expense
               :recordType="recordType"
-              @closeRecordDialog="recordDialog = false;"
+              @closeRecordDialog="closeRecordDialog"
              > 
             </record-income-expense>
           </v-tab-item>
           <v-tab-item id="expense" >
             <record-income-expense
               :recordType="recordType"
-              @closeRecordDialog="recordDialog = false;"
+              @closeRecordDialog="closeRecordDialog"
              > 
             </record-income-expense>
           </v-tab-item>
@@ -78,20 +81,48 @@
 </template>
 <script>
 import RecordIncomeExpense from './record-income-expense';
+import { mapState } from 'vuex';
 
 export default {
   name:'AddRecord',
   data() {
     return {    
-      recordDialog:false,
-      recordType:''
+      recordType:'',
     }
+  },
+  watch: { 
+    recordState() { 
+      if(this.recordState == 'update') { 
+        this.recordType = this.record.type;
+        
+      }
+    }
+  },
+  computed: { 
+    recordDialog :  {
+      get() { 
+        return this.$store.state.records.isRecordDialog;
+      },
+      set(val) { 
+        this.$store.commit(`records/TOGGLE_RECORD_DIALOG`,val)
+      }
+    },
+    ...mapState(`records`,['record','recordState'])
   },
   components: {
     RecordIncomeExpense
   },
   methods: {
-   
+   openRecordDialog() { 
+      this.$store.commit('records/SET_RECORD_STATE','create');
+      this.$store.commit(`records/RESET_RECORD_VALUES`)
+    },
+    closeRecordDialog() { 
+      this.recordType = '';
+      this.$store.commit('records/SET_RECORD_STATE','');
+      this.$store.commit(`records/RESET_RECORD_VALUES`)
+      this.recordDialog = false;
+    }
   }
 }
 </script>

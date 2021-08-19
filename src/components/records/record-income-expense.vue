@@ -2,10 +2,10 @@
   <div>
     <div class="space-20"></div>
     <div class="container">
-      <p v-if="recordType == 'income'" class="record-title">
+      <p v-if="recordType == 'income'" class="income-style">
         <v-icon color="green">mdi-file-document</v-icon> Income Details
       </p>
-      <p center v-else class="expense-title ">
+      <p center v-else class="expense-style ">
         <v-icon color="red">mdi-file-document</v-icon> Expense Details
       </p>
       <v-divider></v-divider>
@@ -143,47 +143,44 @@
         <v-btn class="mr-5 px-10" @click="closeRecordDialog"  large color="rgba(0,0,0,0.8)" dark
           >Cancel</v-btn
         >
-        <v-btn class="px-12" @click="saveRecord" large color="success">Save</v-btn>
+        <v-btn v-if="recordState=='create'" class="px-12" @click="saveRecord" large color="success">Save</v-btn>
+        <v-btn v-else class="px-12" @click="updateRecord" large color="success">Update</v-btn>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'; 
+import { mapGetters } from 'vuex';
+import { mapState } from 'vuex'; 
 
 export default {
   name: 'RecordIncomeExpense',
   data() {
     return {
-      items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
       recordDate: {},
-      record: {
-        source: '',
-        type:'',
-        account:'',
-        date:'',
-        amount:'',
-        category:'',
-        label:'',
-        note:''
-      },
-      recordValid:false
+      recordValid:false,
     };
   },
-  mounted() { 
-    
+  watch : { 
+    recordState() { 
+       if(this.recordState != 'update') { 
+        this.$refs.record.reset()
+        this.$refs.record.resetValidation()
+      }
+    }
   },
+
   computed: {
     ...mapGetters({ 
       accounts: `records/GET_ACCOUNTS`,
       categories: `records/GET_CATEGORIES`,
       labels: `records/GET_LABELS`,
     }),
+    ...mapState(`records`,['recordState','record']),
     recordText() {
       if (this.recordType == 'income') return 'Source of Income';
       else return 'Where did you Spend';
     },
-
   },
   props: {
     recordType: String,
@@ -195,28 +192,37 @@ export default {
     saveRecord() { 
       this.$refs.record.validate();
       if(this.recordValid) { 
-        this.record.type = this.recordType; 
+        this.$store.commit(`records/SET_RECORD_TYPE`, this.recordType)
         this.$store.dispatch(`records/ADD_RECORD`,this.record)
-        .then(() => { 
+        .then((res) => { 
+          let snackBar = { 
+            show:true,
+            text:`${res.source} has been added to the ${res.type} Records `,
+            color:`green`
+          } 
+          this.$store.commit(`general/SHOW_SNACKBAR`, snackBar) 
+          this.$store.dispatch(`records/GET_TOTAL_RECORDS`)
+          this.closeRecordDialog()
+
+        })
+      }
+    },
+    updateRecord() {
+      this.$refs.record.validate();
+      if(this.recordValid) {   
+        this.$store.commit(`records/SET_RECORD_TYPE`, this.recordType)
+        this.$store.dispatch(`records/UPDATE_RECORD`, this.record)
+        .then((res) => { 
+          let snackBar = { 
+            show:true,
+            text:`${res.type} ${res.source} has been successfully updated`,
+            color:`green`
+          } 
+          this.$store.commit(`general/SHOW_SNACKBAR`, snackBar)
           this.closeRecordDialog();
         })
-
       }
     }
   }
 };
-</script>
-
-<style lang="scss" scoped>
-.record-title {
-  color: rgba(0, 0, 0, 0.5);
-  font-size: 22px;
-  color: green;
-}
-
-.expense-title {
-  color: rgba(0, 0, 0, 0.5);
-  font-size: 22px;
-  color: red;
-}
-</style>
+</script>>

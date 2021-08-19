@@ -79,7 +79,6 @@ export const SET_ALL_LABELS = (state,payload) => {
 
 
 export const UPDATE_LABEL = (state,payload) => { 
-  console.log(`payload`,payload)
   let labelIndex = state.labels.findIndex(i => i.id == payload.id);
   if(labelIndex >= 0) { 
     state.labels[labelIndex].name = payload.name;
@@ -93,4 +92,76 @@ export const DELETE_LABEL = (state,payload) => {
     state.labels.splice(labelIndex,1)
   }
 }
+
+export const SET_RECORDS = (state,payload) => { 
+  state.records = payload;
+}
+
+export const ADD_RECORD = (state,payload ) => { 
+  let recordIndex = state.records.findIndex(rec => rec.id == payload.id);
+  if(recordIndex < 0) { 
+    state.records.unshift(payload)
+  }
+}
+
+export const SET_TOTAL_RECORDS_LENGTH = (state,totalRecords ) => { 
+  state.totalRecords = totalRecords
+}
+
+export const TOGGLE_RECORD_DIALOG = ( state,payload) => { 
+  state.isRecordDialog = payload;
+}
+
+export const SET_EXISTING_RECORD_VALUES = (state,payload) => { 
+  let {id, source, account, type, date, amount, category, label, note, lastUpdated } = payload;
+  state.record = {
+   id, source, account,type,date,amount,category,label,note,lastUpdated
+  }
+}
+
+export const RESET_RECORD_VALUES= (state) => { 
+ state.record.id = null;
+ state.record.source = null;
+ state.record.type = null;
+}
+
+export const SET_RECORD_STATE = (state,payload) => { 
+  state.recordState = payload;
+}
+
+export const SET_RECORD_TYPE = (state,type) => { 
+  state.record.type = type;
+}
+
+export const UPDATE_RECORD = (state,payload) => { 
+  let recordIndex = state.records.findIndex(rec => rec.id == payload.id);
+  if(recordIndex >= 0 ) { 
+    let {source, account, type, date, amount, category, label, note } = payload;
+    state.records[recordIndex].source = source;
+    state.records[recordIndex].account = account;
+    state.records[recordIndex].type = type;
+    state.records[recordIndex].date = date;
+    state.records[recordIndex].amount = amount;
+    state.records[recordIndex].category = category;
+    state.records[recordIndex].label = label;
+    state.records[recordIndex].note = note;
+    
+  }
+}
+
+export const DELETE_RECORD = (state,payload) => { 
+  let recordIndex = state.records.findIndex(i => i.id == payload);
+  if(recordIndex >= 0) { 
+    state.records.splice(recordIndex,1)
+  }
+}
+
+export const SET_RECORD_INFO_TO_DELETE = (state,record) => { 
+  let recordIndex = state.records.findIndex(i => i.id == record.id);
+  if(recordIndex >= 0) { 
+    state.record.id = record.id,
+    state.record.source = record.source
+  }
+}
+
 

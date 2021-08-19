@@ -93,20 +93,19 @@ export const DELETE_LABEL = (state,payload) => {
   }
 }
 
-export const SET_ALL_RECORDS = (state,payload) => { 
-  payload.forEach(item => {
-    let checkExist = state.records.findIndex(cat => cat.id == item.id) 
-    if(checkExist < 0) {    
-      state.records.push(item)
-    }
-  })
+export const SET_RECORDS = (state,payload) => { 
+  state.records = payload;
 }
 
 export const ADD_RECORD = (state,payload ) => { 
   let recordIndex = state.records.findIndex(rec => rec.id == payload.id);
   if(recordIndex < 0) { 
-    state.records.push(payload)
+    state.records.unshift(payload)
   }
+}
+
+export const SET_TOTAL_RECORDS_LENGTH = (state,totalRecords ) => { 
+  state.totalRecords = totalRecords
 }
 
 export const TOGGLE_RECORD_DIALOG = ( state,payload) => { 
@@ -114,9 +113,9 @@ export const TOGGLE_RECORD_DIALOG = ( state,payload) => {
 }
 
 export const SET_EXISTING_RECORD_VALUES = (state,payload) => { 
-  let {id, source, account, type, date, amount, category, label, note } = payload;
+  let {id, source, account, type, date, amount, category, label, note, lastUpdated } = payload;
   state.record = {
-   id, source, account,type,date,amount,category,label,note
+   id, source, account,type,date,amount,category,label,note,lastUpdated
   }
 }
 

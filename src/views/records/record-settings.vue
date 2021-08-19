@@ -79,6 +79,13 @@
               </div>
           </div>
         </div>
+        <Snackbar
+        class="mb-10"
+        v-if="snackbar.show"
+        :show="snackbar.show"
+        :text="snackbar.text"
+        :color="snackbar.color"
+      ></Snackbar>
       </div>
   </div>
 </template>
@@ -88,6 +95,8 @@ import SettingsAccounts from '../../components/records/record-settings/settings-
 import SettingsCategories from '../../components/records/record-settings/settings-categories';
 import SettingsGeneral from '../../components/records/record-settings/settings-general';
 import SettingsLabels from '../../components/records/record-settings/settings-labels';
+import Snackbar from '@/components/common/snackbar';
+import { mapState } from 'vuex';
 
 export default {
   name:'RecordSettings',
@@ -111,15 +120,31 @@ export default {
           disabled: false,
           href: 'settings',
         },
-      ]
+      ],
     }
+  },
+  watch: { 
+    snackbar : {
+      handler() {      
+        setTimeout(() => {  
+          this.snackbar.show = false;
+        }, 2500);
+      },
+      deep:true
+    } 
   },
   components: {
     SettingsAccounts,
     SettingsCategories,
     SettingsGeneral,
-    SettingsLabels,
-  
+    SettingsLabels, 
+    Snackbar
+  },
+  mounted() { 
+    this.$store.commit(`general/RESET_SNACKBAR`)
+  },
+  computed: { 
+    ...mapState(`general`,[`snackbar`])
   },
   methods: {
     showSetting(key) {

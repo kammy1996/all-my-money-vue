@@ -115,6 +115,7 @@ export default {
   methods: {
    openRecordDialog() { 
       this.$store.commit('records/SET_RECORD_STATE','create');
+      this.$store.commit(`records/RESET_RECORD_VALUES`)
     },
     closeRecordDialog() { 
       this.recordType = '';

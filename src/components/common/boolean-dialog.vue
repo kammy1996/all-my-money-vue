@@ -3,17 +3,24 @@
     <v-dialog
         v-model="dialog"
         max-width="450"
+        @click:outside="toggleDialog"
+        clossable
       >
         <v-card class="pa-5">
-          <h3>
-            {{ type }} "{{ name }}" will be permanently deleted ? 
-          </h3>
-          <div class="space-30"></div>
-          <v-card-actions >
-            <v-spacer></v-spacer>
-
+          <h4 class="mb-2">
+           <div class="text-center mb-2"><v-icon color="red" size="40px" >mdi-information </v-icon></div>   
+            <div class="text-center"> {{ type }} "{{ name }}" will be permanently deleted ?</div> 
+          </h4>
+          <template v-if="type != 'Record'">
+            <v-divider></v-divider>
+            <v-card-subtitle   class="ml-n5 mt-1 text-center">All the Associated Records with this {{ type }} will be Affected.</v-card-subtitle>
+          </template>
+          <div class="space-20"></div>
+          <v-card-actions>
+          
+          <div style="margin-left:23%" >
             <v-btn
-              color="grey"
+              color="darkgrey"
               dark
               @click="cancel"
             >
@@ -22,11 +29,14 @@
 
             <v-btn
               color="red"
+              class="ml-3"
               dark
               @click="confirm"
             >
-              Yes
+              Confirm
             </v-btn>
+              
+            </div>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -42,6 +52,9 @@ export default ({
     type:String
   },
   methods: { 
+    toggleDialog() { 
+      this.$emit(`toggleDialog`)
+    },
     confirm() {
       this.$emit(`confirmed`)
     },

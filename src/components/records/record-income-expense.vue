@@ -2,10 +2,10 @@
   <div>
     <div class="space-20"></div>
     <div class="container">
-      <p v-if="recordType == 'income'" class="record-title">
+      <p v-if="recordType == 'income'" class="income-style">
         <v-icon color="green">mdi-file-document</v-icon> Income Details
       </p>
-      <p center v-else class="expense-title ">
+      <p center v-else class="expense-style ">
         <v-icon color="red">mdi-file-document</v-icon> Expense Details
       </p>
       <v-divider></v-divider>
@@ -194,8 +194,16 @@ export default {
       if(this.recordValid) { 
         this.$store.commit(`records/SET_RECORD_TYPE`, this.recordType)
         this.$store.dispatch(`records/ADD_RECORD`,this.record)
-        .then(() => { 
-          this.closeRecordDialog();
+        .then((res) => { 
+          let snackBar = { 
+            show:true,
+            text:`${res.source} has been added to the ${res.type} Records `,
+            color:`green`
+          } 
+          this.$store.commit(`general/SHOW_SNACKBAR`, snackBar) 
+          this.$store.dispatch(`records/GET_TOTAL_RECORDS`)
+          this.closeRecordDialog()
+
         })
       }
     },
@@ -204,25 +212,17 @@ export default {
       if(this.recordValid) {   
         this.$store.commit(`records/SET_RECORD_TYPE`, this.recordType)
         this.$store.dispatch(`records/UPDATE_RECORD`, this.record)
-        .then(() => { 
+        .then((res) => { 
+          let snackBar = { 
+            show:true,
+            text:`${res.type} ${res.source} has been successfully updated`,
+            color:`green`
+          } 
+          this.$store.commit(`general/SHOW_SNACKBAR`, snackBar)
           this.closeRecordDialog();
         })
       }
     }
   }
 };
-</script>
-
-<style lang="scss" scoped>
-.record-title {
-  color: rgba(0, 0, 0, 0.5);
-  font-size: 22px;
-  color: green;
-}
-
-.expense-title {
-  color: rgba(0, 0, 0, 0.5);
-  font-size: 22px;
-  color: red;
-}
-</style>
+</script>>

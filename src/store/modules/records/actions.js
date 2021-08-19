@@ -271,14 +271,35 @@ export const UPDATE_RECORD = (context,payload) => {
   })
 }
 
-export const GET_ALL_RECORDS = (context) => { 
+export const GET_RECORDS = (context,payload) => { 
   return new Promise((resolve,reject) => { 
     axios({
       method:'GET',
-      url : '/records'
+      url : '/records',
+      params: { 
+        perPage: payload.itemsPerPage,
+        page:payload.page,
+        order:payload.order
+      }
     })
     .then(res => { 
-      context.commit(`SET_ALL_RECORDS`,res.data)
+      resolve(res.data)
+      context.commit(`SET_RECORDS`,res.data);
+    })
+    .catch(err => {
+      reject(err)
+    })
+  })  
+}
+
+export const GET_TOTAL_RECORDS = (context) => { 
+  return new Promise((resolve,reject) => { 
+    axios({
+      method:'GET',
+      url : '/records/total'
+    })
+    .then(res => { 
+      context.commit(`SET_TOTAL_RECORDS_LENGTH`,res.data)
       resolve(res.data)
     })
     .catch(err => {

@@ -283,16 +283,28 @@ export default {
       this.$store.dispatch(`records/DELETE_ACCOUNT`,this.account.id)
       .then(() => { 
         this.deleteDialog = false
+        let snackbar = { 
+          show:true,
+          color:'green',
+          text:`Account ${this.account.name} has been Sucessfully Deleted`
+        }
+        this.$store.commit(`general/SHOW_SNACKBAR`,snackbar);
       })
     },
     updateAccount() {     
       this.$refs[`account`].validate();
       if(this.formValid && this.accountState =='update') { 
         this.$store.dispatch(`records/UPDATE_ACCOUNT`, this.account)
-        .then(() => { 
+        .then((res) => { 
           this.accountDialog = false;
           this.$refs.account.reset();
           this.account = {};
+          let snackbar = { 
+            show:true,
+            color:'green',
+            text:`Account ${res.name} has been Sucessfully Updated`
+          }
+        this.$store.commit(`general/SHOW_SNACKBAR`,snackbar);
         })
       }
     },
@@ -311,10 +323,17 @@ export default {
       if (this.formValid) {
         this.$store
           .dispatch(`records/ADD_ACCOUNT`, this.account)
-          .then(() => {
+          .then((res) => {
+            let snackbar = { 
+              show:true,
+              color:'green',
+              text:`Account ${res.name} has been Sucessfully Added`
+            }
+            this.$store.commit(`general/SHOW_SNACKBAR`,snackbar);
             this.accountDialog = false;     
             this.$refs.account.reset();
             this.account = {};
+            
           })
       }
     },

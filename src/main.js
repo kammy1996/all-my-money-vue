@@ -10,6 +10,7 @@ import progressOptions from '@/helpers/progressBar';
 Vue.use(VueProgressBar,progressOptions);
 
 import './assets/css/main.scss';
+import './assets/css/records.scss';
 
 export default new Vue({
   router,

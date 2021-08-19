@@ -1,27 +1,36 @@
 <template>
-  <div>
+  <div class="mt-3">
     <v-card dense>
-      <div class="row px-5 mb-1">
-        <div class="col-md-7">
+      <div class="row pl-5 mb-1">
+        <div class="col-md-8">
           <h3 class="settings-title mb-3 ml-5 pt-5">YOUR RECORDS</h3>
         </div>
-        <div class="col-md-5">
-          <v-text-field
-            v-model="searchRecords"
-            append-icon="mdi-magnify"
-            label="Search Records"
-            single-line
-            hide-details
-          ></v-text-field>
+        <div class="col-md-3 ml-15 mt-2">
+          <template class="">
+            <v-select
+              :items="customSortings"
+              @change="getRecords"
+              v-model="customSort"
+              item-text="type"
+              item-value="value"
+              dense
+              label="Sort By"
+              outlined
+            ></v-select>
+        </template>
         </div>
       </div>
       <v-data-table
         :headers="headers"
         :items="records"
-        :search="searchRecords"
+        :options.sync="recordOptions"
+        :server-items-length="totalRecords"
         item-key="name"
         class="elevation-1"
       >
+        <template v-slot:item.date="{ item }">
+          {{ item.date | recordDate }}
+        </template>
         <template v-slot:item.account="{ item }">
           <v-icon size="medium">
             {{ getDependentDetails(item.account, 'account', 'typeIcon') }}
@@ -61,12 +70,41 @@
           </b>
         </template>
         <template v-slot:item.action="{ item }">
-          <v-icon small class="mr-2" @click="editRecord(item)">
-            mdi-pencil
-          </v-icon>
-          <v-icon small @click="removeRecord(item)">
-            mdi-delete
-          </v-icon>
+          <v-menu
+            bottom
+            offset-y
+          >
+            <template v-slot:activator="{ on, attrs }">
+           
+              
+                <v-icon v-bind="attrs"
+                v-on="on"  class="mr-2" >
+                  mdi-dots-vertical
+                </v-icon>
+            </template>
+            <v-list>
+              <v-list-item class="my-n1 cursor-pointer ">
+                <v-list-item-title @click="editRecord(item)"><v-icon small
+                   >
+                  mdi-pencil
+                </v-icon> Edit</v-list-item-title>
+              </v-list-item>
+              <v-divider></v-divider>
+              <v-list-item class="my-n1 cursor-pointer">
+                <v-list-item-title @click="openRecordDetailsDialog(item)"  ><v-icon small
+                   >
+                  mdi-information
+                </v-icon> Details</v-list-item-title>
+              </v-list-item >
+              <v-divider></v-divider>
+              <v-list-item  class="my-n1 cursor-pointer">
+                <v-list-item-title @click="removeRecord(item)"><v-icon small
+                   >
+                  mdi-delete
+                </v-icon> Delete</v-list-item-title>
+              </v-list-item>
+            </v-list> 
+          </v-menu>
         </template>
       </v-data-table>
        <BooleanDialog
@@ -74,8 +112,19 @@
         :name="record.source"
         :type="'Record'"
         @confirmed="deleteRecord"
+        @toggleDialog="deleteDialog = !deleteDialog"
         @cancelled="deleteDialog = false"
       > </BooleanDialog>
+
+      <RecordDetails
+        :dialog="recordDetailsDialog"
+        :record="record"
+        @toggleDialog="recordDetailsDialog = !recordDetailsDialog"
+        :accounts="accounts"
+        :categories="categories"
+        :labels="labels"
+        >
+      </RecordDetails>
     </v-card>
   </div>
 </template>
@@ -84,34 +133,74 @@
 import { mapGetters } from 'vuex';
 import { mapState } from 'vuex';
 import BooleanDialog from '@/components/common/boolean-dialog';
+import RecordDetails from '@/components/records/record-details';
+import moment from 'moment';
 
 export default {
   name: 'RecordsList',
   data() {
     return {
       checkbox: false,
+        customSortings:[
+        {
+          type : 'Date (Newest Records)',
+          value: '-1'
+        }, {
+          type : 'Date (Oldest Records)',
+          value: '1'
+        }
+      ],
+      customSort:"-1",
+      recordOptions:{},
       headers: [
         {
           text: 'Date',
           value: 'date',
+          sortable: false
         },
         {
           text: 'Source',
           value: 'source',
+          sortable: false
         },
-        { text: 'Account', value: 'account' },
-        { text: 'Category', value: 'category' },
-        { text: 'Label', value: 'label' },
-        { text: 'Amount', value: 'amount' },
+        { text: 'Account', value: 'account',sortable: false },
+        { text: 'Category', value: 'category',sortable: false },
+        { text: 'Label', value: 'label',sortable: false },
+        { text: 'Amount', value: 'amount', sortable: false},
         { text: 'Action', value: 'action', sortable: false },
       ],
       singleSelect: false,
-      selected: false,
-      searchRecords: '',   
+      selected: false,  
       deleteDialog:false,
+      recordDetailsDialog : false
     };
   },
+  watch: { 
+    recordOptions: {
+      handler () {
+        this.getTotalRecords();
+        this.getRecords()
+      },
+      deep: true,
+    },
+  },
+
+  filters : { 
+    recordDate(val) {
+      return moment(val).format('D MMM')
+    }
+  },
   methods: {
+    getTotalRecords() { 
+      this.$store.dispatch(`records/GET_TOTAL_RECORDS`) 
+    },
+    getRecords() { 
+       let order = this.customSort;
+       let itemsPerPage = this.recordOptions.itemsPerPage;
+       let page  = this.recordOptions.page;
+      
+       this.$store.dispatch(`records/GET_RECORDS`, {itemsPerPage, page,order})
+    },
     getDependentDetails(id, list, prop) {
       let listToFilter;
       switch (list) {
@@ -137,11 +226,24 @@ export default {
       this.deleteDialog = true;
       this.$store.commit(`records/SET_RECORD_INFO_TO_DELETE`,record);
     },
+    openRecordDetailsDialog(record) { 
+      this.recordDetailsDialog = true;
+      this.$store.commit('records/SET_EXISTING_RECORD_VALUES',record);
+    },
     deleteRecord() {
-      this.$store.dispatch(`records/DELETE_RECORD`, this.record.id)
-      .then(() => { 
-        this.deleteDialog = false;
-      })
+      if(this.record.id && this.record.source) { 
+        this.$store.dispatch(`records/DELETE_RECORD`, this.record.id)
+        .then(() => { 
+          let snackBar = { 
+              show:true,
+              text:`${this.record.source} has been Sucessfully Deleted`,
+              color:`green`
+            } 
+          this.$store.commit(`general/SHOW_SNACKBAR`, snackBar)
+          this.getTotalRecords(); 
+          this.deleteDialog = false;
+        })
+      }
     },
   },
   computed: {
@@ -151,10 +253,11 @@ export default {
       categories: 'records/GET_CATEGORIES',
       labels: 'records/GET_LABELS',
     }),
-    ...mapState(`records`,['record'])
+    ...mapState(`records`,['record','totalRecords'])
   },
   components: { 
-    BooleanDialog
+    BooleanDialog,
+    RecordDetails
   }
 };
 </script>

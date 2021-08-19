@@ -14,7 +14,7 @@
               item-text="type"
               item-value="value"
               dense
-              label="Sort By"
+              label="Sort By."
               outlined
             ></v-select>
         </template>

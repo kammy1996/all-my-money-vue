@@ -292,6 +292,49 @@ export const GET_RECORDS = (context,payload) => {
   })  
 }
 
+export const GET_TOTAL_FILTERED_RECORDS = (context,queryString) => { 
+  return new Promise((resolve,reject) => { 
+    axios({
+      method:'GET',
+      url : '/records/filtered/total',
+      params: { 
+        query:queryString
+      }
+    })
+    .then(res => { 
+      resolve(res.data)
+      context.commit(`SET_TOTAL_RECORDS_LENGTH`,res.data);
+    })
+    .catch(err => {
+      reject(err)
+    })
+  })  
+}
+
+export const GET_FILTERED_RECORDS = (context,{ queryString, page , perPage,order}) => { 
+  console.log(`from actions`, page)
+  console.log(`from actions`, perPage)
+  return new Promise((resolve,reject) => { 
+    axios({
+      method:'GET',
+      url : '/records/filtered',
+      params: { 
+        query:queryString,
+        page: page,
+        perPage: perPage,
+        order:order
+      },
+    })
+    .then(res => { 
+      resolve(res.data)
+      context.commit(`SET_RECORDS`,res.data);
+    })
+    .catch(err => {
+      reject(err)
+    })
+  })  
+}
+
 export const GET_TOTAL_RECORDS = (context) => { 
   return new Promise((resolve,reject) => { 
     axios({

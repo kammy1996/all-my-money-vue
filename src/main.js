@@ -9,6 +9,8 @@ import progressOptions from '@/helpers/progressBar';
 
 Vue.use(VueProgressBar,progressOptions);
 
+export const bus = new Vue()
+
 import './assets/css/main.scss';
 import './assets/css/records.scss';
 

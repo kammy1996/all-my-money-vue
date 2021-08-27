@@ -15,6 +15,8 @@ const state = {
     label:'',
     note:''
   },
+  recordOptions:{},
+  isRecordsFiltered:false,
   isRecordDialog:false,
   labels:[],
   categories: [

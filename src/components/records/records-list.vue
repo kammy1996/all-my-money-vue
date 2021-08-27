@@ -13,6 +13,7 @@
               v-model="customSort"
               item-text="type"
               item-value="value"
+              :disabled="isRecordsFiltered"
               dense
               label="Sort By."
               outlined
@@ -135,6 +136,7 @@ import { mapState } from 'vuex';
 import BooleanDialog from '@/components/common/boolean-dialog';
 import RecordDetails from '@/components/records/record-details';
 import moment from 'moment';
+import bus from '@/main';
 
 export default {
   name: 'RecordsList',
@@ -150,8 +152,8 @@ export default {
           value: '1'
         }
       ],
-      customSort:"-1",
       recordOptions:{},
+      customSort:"-1",
       headers: [
         {
           text: 'Date',
@@ -177,29 +179,38 @@ export default {
   },
   watch: { 
     recordOptions: {
-      handler () {
-        this.getTotalRecords();
-        this.getRecords()
+      handler (val) {
+        this.$store.commit(`records/SET_RECORD_OPTIONS`, val)
+        if(this.isRecordsFiltered) { 
+          bus.$emit(`getFilteredRecords`,this.customSort);
+        }else { 
+          this.getRecords();
+        }
+
       },
       deep: true,
     },
   },
-
   filters : { 
     recordDate(val) {
       return moment(val).format('D MMM')
     }
   },
+  mounted() { 
+    this.$store.commit('records/SET_IS_RECORDS_FILTERED',false);
+    bus.$on(`getAllRecords`,() => {
+      this.getRecords();
+    })
+  },
   methods: {
-    getTotalRecords() { 
-      this.$store.dispatch(`records/GET_TOTAL_RECORDS`) 
-    },
     getRecords() { 
        let order = this.customSort;
        let itemsPerPage = this.recordOptions.itemsPerPage;
        let page  = this.recordOptions.page;
-      
-       this.$store.dispatch(`records/GET_RECORDS`, {itemsPerPage, page,order})
+        
+      this.$store.dispatch(`records/GET_TOTAL_RECORDS`).then(() => {
+        this.$store.dispatch(`records/GET_RECORDS`, {itemsPerPage, page,order})
+      })
     },
     getDependentDetails(id, list, prop) {
       let listToFilter;
@@ -253,7 +264,8 @@ export default {
       categories: 'records/GET_CATEGORIES',
       labels: 'records/GET_LABELS',
     }),
-    ...mapState(`records`,['record','totalRecords'])
+    ...mapState(`records`,['record','totalRecords','isRecordsFiltered']),
+
   },
   components: { 
     BooleanDialog,

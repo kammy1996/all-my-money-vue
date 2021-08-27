@@ -104,6 +104,14 @@ export const ADD_RECORD = (state,payload ) => {
   }
 }
 
+export const SET_RECORD_OPTIONS = (state,options) => { 
+  state.recordOptions = options;
+}
+
+export const SET_IS_RECORDS_FILTERED = (state,value) => { 
+  state.isRecordsFiltered = value;
+}
+
 export const SET_TOTAL_RECORDS_LENGTH = (state,totalRecords ) => { 
   state.totalRecords = totalRecords
 }

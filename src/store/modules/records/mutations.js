@@ -112,6 +112,10 @@ export const SET_IS_RECORDS_FILTERED = (state,value) => {
   state.isRecordsFiltered = value;
 }
 
+export const GO_TO_FIRST_PAGE_FOR_FILTER = (state) => { 
+  state.recordOptions.page = 1;
+}
+
 export const SET_TOTAL_RECORDS_LENGTH = (state,totalRecords ) => { 
   state.totalRecords = totalRecords
 }

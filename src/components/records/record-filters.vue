@@ -120,7 +120,7 @@
             <v-checkbox
               multiple
               v-model="filters.amount"
-              :value="amount.id"
+              :value="amount.value"
               :label="amount.name"
               dense
               hide-details
@@ -145,10 +145,10 @@ export default {
         { id: '2', name: 'Expense', value: 'expense' },
       ],
       amounts: [
-        {id: '1',name: 'less than 500', value: {min: 0, max: 500}},
-        { id: '2', name: '500 - 2000', value: { min: 500, max: 2000 }},
-        { id: '3', name: '2000 - 10000', value: { min: 2000, max: 10000}},
-        { id: '4', name: 'Above 10000', value: { min: 10000, max: 10000000}},
+        { id: '1', name: 'less than 500', value: [0, 500] },
+        { id: '2', name: '500 - 2000', value: [500, 2000] },
+        { id: '3', name: '2000 - 10000', value: [2000, 10000] },
+        { id: '4', name: 'Above 10000', value: [10000, 10000000] },
       ],
       filters: {},
       filterPanel: false,
@@ -176,30 +176,43 @@ export default {
     ...mapState('records', ['recordOptions', 'isRecordsFiltered']),
   },
   methods: {
-    filterAmounts() {
-
+    filterAmounts(newFilters) {
+      var newArray = Array.prototype.concat.apply([], newFilters.amount);
+      let uniqueArr = [...new Set(newArray)];
+      let min = Math.min(...uniqueArr);
+      let max = Math.max(...uniqueArr);
+      let amount = [min, max];
+      return amount;
     },
     cleanFiltersAndCheck() {
+      //Creating a deep copy of Filters
+      let newFilters = JSON.parse(JSON.stringify(this.filters));
+
       //Delete keys which are empty array
-      Object.keys(this.filters).forEach((key) => {
-        if(key === 'amount') this.filterAmounts();
-        if (this.filters[key].length == 0) delete this.filters[key];
+      Object.keys(newFilters).forEach((key) => {
+        if (newFilters[key] && newFilters[key].length < 1)
+          delete newFilters[key];
       });
-      
-      if (Object.keys(this.filters).length == 0) {
+
+      //Making new Amount filter if filtered by Amount
+      if (newFilters.amount) {
+        newFilters.amount = this.filterAmounts(newFilters);
+      }
+
+      if (Object.keys(newFilters).length == 0) {
         this.$store.commit(`records/SET_IS_RECORDS_FILTERED`, false);
         bus.$emit('getAllRecords');
       } else {
         this.$store.commit(`records/SET_IS_RECORDS_FILTERED`, true);
-        if (this.isRecordsFiltered) this.getFilteredRecords();
+        if (this.isRecordsFiltered) this.getFilteredRecords(newFilters);
       }
     },
-    getFilteredRecords() {
+    getFilteredRecords(newFilters) {
       let perPage = this.recordOptions.itemsPerPage;
       let page = this.recordOptions.page;
 
-      let queryString = Object.keys(this.filters)
-        .map((key) => key + '=' + this.filters[key])
+      let queryString = Object.keys(newFilters)
+        .map((key) => key + '=' + newFilters[key])
         .join(`&`);
 
       this.$store
@@ -214,6 +227,7 @@ export default {
     },
     resetFilters() {
       this.filterPanel = undefined;
+      this.$store.commit(`records/GO_TO_FIRST_PAGE_FOR_FILTER`);
       this.filters = {};
     },
   },

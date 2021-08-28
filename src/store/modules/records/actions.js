@@ -312,8 +312,7 @@ export const GET_TOTAL_FILTERED_RECORDS = (context,queryString) => {
 }
 
 export const GET_FILTERED_RECORDS = (context,{ queryString, page , perPage,order}) => { 
-  console.log(`from actions`, page)
-  console.log(`from actions`, perPage)
+
   return new Promise((resolve,reject) => { 
     axios({
       method:'GET',

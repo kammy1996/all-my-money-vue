@@ -311,8 +311,45 @@ export const GET_TOTAL_FILTERED_RECORDS = (context,queryString) => {
   })  
 }
 
-export const GET_FILTERED_RECORDS = (context,{ queryString, page , perPage,order}) => { 
+export const GET_TOTAL_DATE_FILTERED_RECORDS = (context,{startDate,endDate}) => { 
+  return new Promise((resolve,reject) => { 
+    axios({
+      method:'GET',
+      url : '/records/date-filtered/total',
+      params: { 
+        startDate,endDate
+      }
+    })
+    .then(res => { 
+      resolve(res.data)
+      context.commit(`SET_TOTAL_RECORDS_LENGTH`,res.data);
+    })
+    .catch(err => {
+      reject(err)
+    })
+  })  
+}
 
+export const GET_DATE_FILTERED_RECORDS = (context,{perPage,page,order,startDate,endDate}) => { 
+  return new Promise((resolve,reject) => { 
+    axios({
+      method:'GET',
+      url : '/records/date-filtered',
+      params: { 
+        startDate,endDate,perPage,page,order,
+      }
+    })
+    .then(res => { 
+      resolve(res.data)
+      context.commit(`SET_RECORDS`,res.data);
+    })
+    .catch(err => {
+      reject(err)
+    })
+  })  
+}
+
+export const GET_FILTERED_RECORDS = (context,{ queryString, page , perPage,order}) => { 
   return new Promise((resolve,reject) => { 
     axios({
       method:'GET',

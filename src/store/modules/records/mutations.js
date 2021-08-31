@@ -104,6 +104,26 @@ export const ADD_RECORD = (state,payload ) => {
   }
 }
 
+export const UPDATE_ACCOUNT_BALANCE = (state,{recordAction, record } ) => { 
+  const accountIndex = state.accounts.findIndex(acc => acc.id == record.account);
+  let accountBalance;
+
+  if(recordAction == 'add' || recordAction == 'update') {
+    if(record.type == 'income') { 
+      accountBalance = state.accounts[accountIndex].balance + record.amount;
+    } else if(record.type == 'expense') { 
+      accountBalance = state.accounts[accountIndex].balance - record.amount;
+    }
+  } else if(recordAction == 'delete') { 
+    if(record.type == 'income') { 
+      accountBalance = state.accounts[accountIndex].balance - record.amount;
+    } else if(record.type == 'expense') { 
+      accountBalance = state.accounts[accountIndex].balance + record.amount;
+    }
+  }
+  state.accounts[accountIndex].balance = accountBalance;
+}
+
 export const SET_RECORD_OPTIONS = (state,options) => { 
   state.recordOptions = options;
 }
@@ -161,8 +181,8 @@ export const UPDATE_RECORD = (state,payload) => {
   }
 }
 
-export const DELETE_RECORD = (state,payload) => { 
-  let recordIndex = state.records.findIndex(i => i.id == payload);
+export const DELETE_RECORD = (state,record) => { 
+  let recordIndex = state.records.findIndex(i => i.id == record.id);
   if(recordIndex >= 0) { 
     state.records.splice(recordIndex,1)
   }

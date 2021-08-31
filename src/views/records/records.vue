@@ -1,11 +1,12 @@
 <template>
   <div class="background-wrapper">
+    <div class="custom-container">
     <div  class="records">
       <div class="space-20"></div>
-      <div class="ma-5 text-center" style="border:1px solid rgba(0,0,0,0.1)">
-        <h2>Glance View</h2>
+      <div class="my-5 text-center">
+        <AccountsGlance 
+        />
       </div>
-      <div class="custom-container">
         <div class="row">
           <div class="col-md-3">
             <v-card class="pa-5" rounded>
@@ -43,6 +44,7 @@
 import AddRecord from '../../components/records/add-record';
 import RecordsList from '../../components/records/records-list';
 import RecordFilters from '@/components/records/record-filters';
+import AccountsGlance from '@/components/records/record-accounts-glance'
 import { mapState } from 'vuex';
 import Snackbar from '@/components/common/snackbar';
 
@@ -70,7 +72,8 @@ export default {
     AddRecord,
     RecordsList,
     Snackbar,
-    RecordFilters
+    RecordFilters,
+    AccountsGlance
   },
   methods: { 
      getRecordDependencies() { 

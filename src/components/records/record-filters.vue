@@ -229,6 +229,7 @@ export default {
       this.filterPanel = undefined;
       this.$store.commit(`records/GO_TO_FIRST_PAGE_FOR_FILTER`);
       this.filters = {};
+      bus.$emit(`filtersResetted`)
     },
   },
 };

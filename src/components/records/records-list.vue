@@ -136,8 +136,8 @@
               </v-icon>
             </template>
             <v-list>
-              <v-list-item class="my-n1 cursor-pointer ">
-                <v-list-item-title @click="editRecord(item)"
+              <v-list-item @click="editRecord(item)" class="my-n1 cursor-pointer ">
+                <v-list-item-title 
                   ><v-icon small>
                     mdi-pencil
                   </v-icon>
@@ -145,8 +145,8 @@
                 >
               </v-list-item>
               <v-divider></v-divider>
-              <v-list-item class="my-n1 cursor-pointer">
-                <v-list-item-title @click="openRecordDetailsDialog(item)"
+              <v-list-item  @click="openRecordDetailsDialog(item)" class="my-n1 cursor-pointer">
+                <v-list-item-title
                   ><v-icon small>
                     mdi-information
                   </v-icon>
@@ -154,8 +154,8 @@
                 >
               </v-list-item>
               <v-divider></v-divider>
-              <v-list-item class="my-n1 cursor-pointer">
-                <v-list-item-title @click="removeRecord(item)"
+              <v-list-item @click="removeRecord(item)" class="my-n1 cursor-pointer">
+                <v-list-item-title 
                   ><v-icon small>
                     mdi-delete
                   </v-icon>
@@ -286,6 +286,11 @@ export default {
     bus.$on(`getAllRecords`, () => {
       this.getRecords();
     });
+    bus.$on(`filtersResetted`, () => {
+      this.filterDate.dateType ='';
+      this.filterDate.customDate = {}
+      this.filterDate.customDateText = ''
+    })
   },
   methods: {
     getRecords() {
@@ -354,7 +359,7 @@ export default {
               color: `green`,
             };
             this.$store.commit(`general/SHOW_SNACKBAR`, snackBar);
-            this.getTotalRecords();
+            this.$store.dispatch(`records/GET_TOTAL_RECORDS`)
             this.deleteDialog = false;
           });
       }

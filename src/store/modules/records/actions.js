@@ -240,7 +240,10 @@ export const ADD_RECORD = (context,payload) => {
       }
     })
     .then(res => {
-      context.commit('ADD_RECORD',res.data)
+      let record = res.data;
+      let recordAction = 'add';
+      context.commit('ADD_RECORD',record)
+      context.commit('UPDATE_ACCOUNT_BALANCE',{ recordAction , record} )
       resolve(res.data)
     })
     .catch(err => {
@@ -262,7 +265,10 @@ export const UPDATE_RECORD = (context,payload) => {
       }
     })
     .then(res => {
-      context.commit('UPDATE_RECORD',res.data)
+      let record = res.data;
+      let recordAction = 'update';
+      context.commit('UPDATE_RECORD',record)
+      context.commit(`UPDATE_ACCOUNT_BALANCE`,{ recordAction , record})
       resolve(res.data)
     })
     .catch(err => {
@@ -398,7 +404,10 @@ export const DELETE_RECORD = (context,payload) => {
       }
     })
     .then(res => {
-      context.commit('DELETE_RECORD',payload);
+      let record = res.data;
+      let recordAction = 'delete';
+      context.commit('DELETE_RECORD',record);
+      context.commit(`UPDATE_ACCOUNT_BALANCE`,{ recordAction , record})
       resolve(res.data)
     })
     .catch(err => {

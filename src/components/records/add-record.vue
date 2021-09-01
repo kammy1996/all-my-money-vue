@@ -51,12 +51,6 @@
             <v-icon>mdi-minus</v-icon>
           </v-tab>
 
-          <v-tab 
-             href="#transfer">
-            Transfer  
-            <v-icon>mdi-import</v-icon>
-          </v-tab>
-
           <v-tab-item id="income">
             <record-income-expense
               :recordType="recordType"
@@ -70,9 +64,6 @@
               @closeRecordDialog="closeRecordDialog"
              > 
             </record-income-expense>
-          </v-tab-item>
-          <v-tab-item id="transfer">
-            transfer
           </v-tab-item>
         </v-tabs>
       </v-card>
